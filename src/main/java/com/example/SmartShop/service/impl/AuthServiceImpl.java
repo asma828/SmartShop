@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-    private final UserRepository userRepository;
+    private  UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
