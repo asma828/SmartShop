@@ -41,7 +41,18 @@ public class AuthServiceImpl implements AuthService {
         User user = SessionUtil.getUser(session);
         log.info("User {} logging out",user.getUsername());
         SessionUtil.clearUser(session);
+    }
 
+    @Override
+    public AuthResponse getCurentUser(HttpSession session){
+        User user = SessionUtil.getUser(session);
+
+        return AuthResponse.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .role(user.getRole())
+                .message("current user retrieved")
+                .build();
     }
 
 
