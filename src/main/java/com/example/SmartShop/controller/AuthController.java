@@ -6,10 +6,7 @@ import com.example.SmartShop.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -32,5 +29,11 @@ public class AuthController {
         authService.logout(session);
         return ResponseEntity.ok(Map.of("message","logout successefuly"));
 
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<AuthResponse> getCurentUser(HttpSession session){
+        AuthResponse response = authService.getCurentUser(session);
+        return ResponseEntity.ok(response);
     }
 }
