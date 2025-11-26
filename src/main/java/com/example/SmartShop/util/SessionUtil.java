@@ -41,4 +41,10 @@ public class SessionUtil {
         return user.getRole() == UserRole.ADMIN;
     }
 
+    //
+    public static boolean isClient(HttpSession session){
+        User user = getUser(session);
+        return user.getRole() == UserRole.CLIENT;
+    }
+
 }
