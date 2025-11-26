@@ -6,6 +6,7 @@ import com.example.SmartShop.dto.response.AuthResponse;
 import com.example.SmartShop.exception.UnauthorizedException;
 import com.example.SmartShop.repository.UserRepository;
 import com.example.SmartShop.service.AuthService;
+import com.example.SmartShop.util.SessionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -25,6 +26,15 @@ public class AuthServiceImpl implements AuthService {
             log.warn("Invalide password for username: {}",request.getUsername());
             throw new UnauthorizedException("Invalide username or password");
         }
+        SessionUtil.setUser(session,user);
+
+        return AuthResponse.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .role(user.getRole())
+                .message("Login successful")
+                .build();
     }
+
 
 }
