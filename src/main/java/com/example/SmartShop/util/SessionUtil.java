@@ -28,5 +28,11 @@ public class SessionUtil {
         return session.getAttribute(USER_SESSION_KEY)!= null;
     }
 
+    //supprimer l'utilisateur de la session
+    public static void clearUser(HttpSession session){
+        session.removeAttribute(USER_SESSION_KEY);
+        session.invalidate();
+    }
+
 
 }
