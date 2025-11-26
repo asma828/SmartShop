@@ -1,6 +1,7 @@
 package com.example.SmartShop.util;
 
 import com.example.SmartShop.Entity.User;
+import com.example.SmartShop.enums.UserRole;
 import com.example.SmartShop.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 
@@ -34,5 +35,10 @@ public class SessionUtil {
         session.invalidate();
     }
 
+    // Vérifier si l'utilisateur est ADMIN
+    public static boolean isAdmin(HttpSession session){
+        User user = getUser(session);
+        return user.getRole() == UserRole.ADMIN;
+    }
 
 }
