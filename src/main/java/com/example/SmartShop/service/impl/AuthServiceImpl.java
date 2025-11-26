@@ -36,5 +36,13 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    @Override
+    public void logout(HttpSession session){
+        User user = SessionUtil.getUser(session);
+        log.info("User {} logging out",user.getUsername());
+        SessionUtil.clearUser(session);
+
+    }
+
 
 }
