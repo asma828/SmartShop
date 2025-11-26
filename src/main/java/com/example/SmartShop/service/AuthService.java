@@ -8,4 +8,5 @@ import javax.servlet.http.HttpSession;
 public interface AuthService {
     AuthResponse login(LoginRequest request, HttpSession session);
     void logout(HttpSession session);
+    AuthResponse getCurentUser(HttpSession session);
 }
