@@ -40,7 +40,19 @@ public class Client {
     @Builder.Default
     private CustomerTier niveauFidelite = CustomerTier.BASIC;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer TotalOrders = 0;
 
+    @Column(nullable = false, precision = 10, scale = 2)
+    @Builder.Default
+    private BigDecimal totalSpent = BigDecimal.ZERO;
+
+    @Column
+    private LocalDateTime firstOrderDate;
+
+    @Column
+    private LocalDateTime lastOrderDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")
