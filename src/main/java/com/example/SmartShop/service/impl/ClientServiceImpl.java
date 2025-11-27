@@ -48,4 +48,16 @@ public class ClientServiceImpl implements ClientService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public ClientResponse updateClient(Long id,ClientRequest request){
+        Client client = clientRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("client introvable avec l'id"+id);
+        if(client.getEmail().equals(request.getEmail()) && clientRepository.existsByEmail(request.getEmail())) {
+            throw new BusinessRuleException("Un client avec cet email existe déjà");
+        }
+            clientMapper.updateEntityFromRequest(request,client);
+            Client updatedClient = clientRepository.save(client);
+            return clientMapper.toResponse(updatedClient);
+    }
+
 }
