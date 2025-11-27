@@ -41,11 +41,25 @@ public class Order {
 
     @Column(nullable = false,precision = 10,scale = 2)
     @Builder.Default
-    private BigDecimal remiseFidelite;
+    private BigDecimal remiseFidelite = BigDecimal.ZERO;
 
     @Column(nullable = false,precision = 10,scale = 2)
     @Builder.Default
-    private BigDecimal remisePromo;
+    private BigDecimal remisePromo = BigDecimal.ZERO;
+
+    //Total remise
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal montantRemiseTotal;
+
+    //apres remis
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal montantHT;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal Tva;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal TotalTTC;
 
 
 }
