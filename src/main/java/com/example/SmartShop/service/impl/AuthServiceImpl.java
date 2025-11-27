@@ -7,15 +7,21 @@ import com.example.SmartShop.exception.UnauthorizedException;
 import com.example.SmartShop.repository.UserRepository;
 import com.example.SmartShop.service.AuthService;
 import com.example.SmartShop.util.SessionUtil;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Service;
 
 @Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private  UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public AuthResponse login(LoginRequest request, HttpSession session){
