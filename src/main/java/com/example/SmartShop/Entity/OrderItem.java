@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "order_items")
 @NoArgsConstructor
@@ -25,5 +27,15 @@ public class OrderItem {
     @JoinColumn(name = "produit_id",nullable = false)
     private Product product;
 
+    @Column(nullable = false)
+    private Integer quantity;
+
+    // prix au moment de la commande
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal unitPrice;
+
+    //Quantite * le prix unitaire
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal TotalLine;
 
 }
