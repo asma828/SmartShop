@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ClientService {
     ClientResponse createClient(ClientRequest request);
-
+    ClientResponse getClientById(Long id);
 }
