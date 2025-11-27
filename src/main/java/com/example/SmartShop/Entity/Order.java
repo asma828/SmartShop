@@ -28,4 +28,8 @@ public class Order {
     @Builder.Default
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Payement> payements = new ArrayList<>();
+
 }
