@@ -5,7 +5,7 @@ import com.example.SmartShop.enums.UserRole;
 import com.example.SmartShop.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 public class SessionUtil {
     private static final String USER_SESSION_KEY = "LOGGED_IN_USER";
