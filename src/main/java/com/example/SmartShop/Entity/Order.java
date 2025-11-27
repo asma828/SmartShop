@@ -61,5 +61,12 @@ public class Order {
     @Column(nullable = false,precision = 10,scale = 2)
     private BigDecimal TotalTTC;
 
+    @Column(nullable = false,precision = 10,scale = 2)
+    @Builder.Default
+    private BigDecimal montantPayer = BigDecimal.ZERO;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal montantRester;
+
 
 }
