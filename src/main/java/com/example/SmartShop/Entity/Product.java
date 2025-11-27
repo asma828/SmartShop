@@ -29,6 +29,8 @@ public class Product {
     @Builder.Default
     private Integer stock=0;
 
-
+    // soft delete
+    @Column(nullable = false ,updatable = false)
+    private boolean deleted=false;
 
 }
