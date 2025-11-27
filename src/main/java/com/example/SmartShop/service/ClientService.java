@@ -12,4 +12,5 @@ public interface ClientService {
     ClientResponse getClientById(Long id);
     List<ClientResponse> getAllClients();
     Page<ClientResponse> getAllClients(Pageable pageable);
+    ClientResponse updateClient(Long id,ClientRequest request);
 }
