@@ -11,7 +11,6 @@ public interface ClientService {
     ClientResponse createClient(ClientRequest request);
     ClientResponse getClientById(Long id);
     List<ClientResponse> getAllClients();
-    Page<ClientResponse> getAllClients(Pageable pageable);
     ClientResponse updateClient(Long id,ClientRequest request);
-    void delete(Long id);
+    void deleteClient(Long id);
 }

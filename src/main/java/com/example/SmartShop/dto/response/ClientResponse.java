@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @Builder
 public class ClientResponse {
     private Long id;
-    private String name;
+    private String nom;
     private String email;
-    private CustomerTier noveauFidelite;
+    private CustomerTier niveauFidelite;
     private Integer TotalOrders;
-    private BigDecimal TotalSpent;
+    private BigDecimal totalSpent;
     private LocalDateTime firstOrderDate;
     private LocalDateTime lastOrderDate;
     private LocalDateTime createdAt;
