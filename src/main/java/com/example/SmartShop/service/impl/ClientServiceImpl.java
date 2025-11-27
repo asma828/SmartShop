@@ -60,4 +60,12 @@ public class ClientServiceImpl implements ClientService {
             return clientMapper.toResponse(updatedClient);
     }
 
+    @Override
+    public void deleteClient(Long id){
+        if(!clientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("client introvable avec l'id" + id);
+        }
+         clientRepository.deleteById(id);
+    }
+
 }
