@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,5 +32,20 @@ public class Order {
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     @Builder.Default
     private List<Payement> payements = new ArrayList<>();
+
+    @Column(length = 20)
+    private String codePromo;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal sousTotal;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    @Builder.Default
+    private BigDecimal remiseFidelite;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    @Builder.Default
+    private BigDecimal remisePromo;
+
 
 }
