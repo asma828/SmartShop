@@ -10,4 +10,5 @@ public interface ProductService {
     ProductResponse createProduct(ProductRequest request);
     ProductResponse findProductById(Long id);
     List<ProductResponse> findAllProducts();
+    ProductResponse updateProduct(Long id,ProductRequest request);
 }
