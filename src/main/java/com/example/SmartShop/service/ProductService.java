@@ -9,4 +9,5 @@ import java.util.List;
 public interface ProductService {
     ProductResponse createProduct(ProductRequest request);
     ProductResponse findProductById(Long id);
+    List<ProductResponse> findAllProducts();
 }
