@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/clients")
 @RequiredArgsConstructor
@@ -29,5 +31,11 @@ public class ClientController {
         SessionUtil.getUser(session);
         ClientResponse response = clientService.getClientById(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClientResponse>> findAllclients(){
+        List<ClientResponse> clients = clientService.getAllClients();
+        return ResponseEntity.ok(clients);
     }
 }
