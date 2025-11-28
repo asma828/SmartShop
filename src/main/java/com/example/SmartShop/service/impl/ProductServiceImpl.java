@@ -3,6 +3,7 @@ package com.example.SmartShop.service.impl;
 import com.example.SmartShop.Entity.Product;
 import com.example.SmartShop.dto.request.ProductRequest;
 import com.example.SmartShop.dto.response.ProductResponse;
+import com.example.SmartShop.exception.ResourceNotFoundException;
 import com.example.SmartShop.mapper.ProductMapper;
 import com.example.SmartShop.repository.ProductRepository;
 import com.example.SmartShop.service.ProductService;
@@ -28,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse findProductById(Long id){
         Product product = productRepository.findById(id)
-                .orElseThrow(("aucun produit trouver avec ce id"+id);
+                .orElseThrow(()->new ResourceNotFoundException("produit n'existe pas avec ce id :"+id));
         return productMapper.toResponse(product);
     }
 
@@ -42,9 +43,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse updateProduct(Long id,ProductRequest request){
         Product product = productRepository.findById(id)
-                .orElseThrow(("produit avec ce id n'existe pas");
+                .orElseThrow(()->new ResourceNotFoundException("Produit n'existe pas avec ce id :"+id));
          productMapper.updateEntityFromRequest(request,product);
          Product updatedProduct = productRepository.save(product);
          return productMapper.toResponse(updatedProduct);
+    }
+
+    @Override
+    public void deleteProduct(Long id){
+        if(!productRepository.existsById(id)){
+            throw new ResourceNotFoundException("produit avec ce id n'existe pas");
+        }
+        productRepository.deleteById(id);
     }
 }
