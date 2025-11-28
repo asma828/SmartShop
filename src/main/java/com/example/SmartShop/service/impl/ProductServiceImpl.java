@@ -9,6 +9,9 @@ import com.example.SmartShop.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -27,5 +30,14 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(("aucun produit trouver avec ce id"+id);
         return productMapper.toResponse(product);
+    }
+
+    @Override
+    public List<ProductResponse> findAllProducts(){
+       return  productRepository.findAll().stream()
+               .map(productMapper::toResponse)
+               .collect(Collectors.toList());
+
+
     }
 }
