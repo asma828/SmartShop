@@ -51,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientResponse updateClient(Long id,ClientRequest request){
         Client client = clientRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("client introvable avec l'id"+id);
+                .orElseThrow(()-> new ResourceNotFoundException("client introvable avec l'id" +id));
         if(client.getEmail().equals(request.getEmail()) && clientRepository.existsByEmail(request.getEmail())) {
             throw new BusinessRuleException("Un client avec cet email existe déjà");
         }
