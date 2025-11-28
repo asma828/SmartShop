@@ -21,12 +21,12 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest request, HttpSession session){
+    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest request){
         ClientResponse clientResponse = clientService.createClient(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientResponse);
     }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public  ResponseEntity<ClientResponse> findClientById(@PathVariable Long id,HttpSession session){
         SessionUtil.getUser(session);
         ClientResponse response = clientService.getClientById(id);
@@ -37,5 +37,11 @@ public class ClientController {
     public ResponseEntity<List<ClientResponse>> findAllclients(){
         List<ClientResponse> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id,@RequestBody ClientRequest request){
+        ClientResponse response = clientService.updateClient(id,request);
+        return ResponseEntity.ok(response);
     }
 }
