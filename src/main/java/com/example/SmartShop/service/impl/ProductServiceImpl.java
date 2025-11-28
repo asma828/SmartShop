@@ -21,4 +21,11 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
          return productMapper.toResponse(savedProduct);
     }
+
+    @Override
+    public ProductResponse findProductById(Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(("aucun produit trouver avec ce id"+id);
+        return productMapper.toResponse(product);
+    }
 }
