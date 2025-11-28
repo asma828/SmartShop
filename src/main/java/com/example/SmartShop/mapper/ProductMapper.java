@@ -34,4 +34,14 @@ public class ProductMapper {
                 .updatedAt(product.getUpdateAt())
                 .build();
     }
-}
+
+    public void updateEntityFromRequest(ProductRequest request, Product product){
+        if(request == null || product==null){
+            return;
+        }
+        product.setNom(request.getNom());
+        product.setPrix(request.getPrix());
+        product.setStock(request.getStock());
+    }
+
+    }

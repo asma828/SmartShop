@@ -37,7 +37,14 @@ public class ProductServiceImpl implements ProductService {
        return  productRepository.findAll().stream()
                .map(productMapper::toResponse)
                .collect(Collectors.toList());
+    }
 
-
+    @Override
+    public ProductResponse updateProduct(Long id,ProductRequest request){
+        Product product = productRepository.findById(id)
+                .orElseThrow(("produit avec ce id n'existe pas");
+         productMapper.updateEntityFromRequest(request,product);
+         Product updatedProduct = productRepository.save(product);
+         return productMapper.toResponse(updatedProduct);
     }
 }
