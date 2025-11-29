@@ -44,4 +44,9 @@ public class Product {
     @Column(nullable = false,updatable = false)
     private LocalDateTime updateAt;
 
+
+    public boolean hasEnoughStock(Integer quantity) {
+        return this.stock >= quantity;
+    }
+
 }
