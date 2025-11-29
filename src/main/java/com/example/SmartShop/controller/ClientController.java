@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("api/clients")
 @RequiredArgsConstructor
 public class ClientController {
-    private ClientService clientService;
+    private final ClientService clientService;
 
     @PostMapping
     public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest request){
@@ -43,5 +43,11 @@ public class ClientController {
     public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id,@RequestBody ClientRequest request){
         ClientResponse response = clientService.updateClient(id,request);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClient(@PathVariable Long id){
+         clientService.deleteClient(id);
+        return ResponseEntity.noContent().build();
     }
 }

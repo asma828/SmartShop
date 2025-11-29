@@ -10,6 +10,7 @@ import com.example.SmartShop.repository.ClientRepository;
 import com.example.SmartShop.service.ClientService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
