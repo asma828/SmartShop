@@ -6,5 +6,5 @@ import com.example.SmartShop.dto.response.OrderResponse;
 public interface OrderService {
 OrderResponse createOrder(OrderRequest request);
 OrderRequest findOrderById(Long id);
-
+OrderRequest findAllOrders();
 }
