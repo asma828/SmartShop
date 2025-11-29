@@ -5,7 +5,9 @@ import com.example.SmartShop.Entity.Product;
 import com.example.SmartShop.dto.request.ClientRequest;
 import com.example.SmartShop.dto.request.ProductRequest;
 import com.example.SmartShop.dto.response.ProductResponse;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductMapper {
 
     public Product toEntity(ProductRequest request) {
