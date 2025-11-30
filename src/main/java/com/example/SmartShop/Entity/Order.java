@@ -87,4 +87,8 @@ public class Order {
 
     @Column
     private LocalDateTime confirmedAt;
+
+    public boolean isFullyPaid(){
+        return montantRester.compareTo(BigDecimal.ZERO)==0;
+    }
 }
