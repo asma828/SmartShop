@@ -77,4 +77,12 @@ public class Client {
         this.totalSpent = this.totalSpent.add(amount);
     }
 
+    public void updateOrderDates(LocalDateTime orderDate) {
+        if (this.firstOrderDate == null) {
+            this.firstOrderDate = orderDate;
+        }
+        this.lastOrderDate = orderDate;
+    }
+
+
 }
