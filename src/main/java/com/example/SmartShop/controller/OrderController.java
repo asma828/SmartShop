@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/Orders")
 @RequiredArgsConstructor
@@ -33,4 +35,13 @@ public class OrderController {
         OrderResponse response = orderService.findOrderById(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> getAllOrders(HttpSession session){
+        SessionUtil.getUser(session);
+        List<OrderResponse> response = orderService.findAllOrders();
+        return ResponseEntity.ok(response);
+    }
+
+
 }
