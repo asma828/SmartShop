@@ -100,6 +100,20 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<OrderResponse> getOrderByClient(Long clientId){
+        return orderRepository.findByClientId(clientId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<OrderResponse> getOrderByStatus(OrderStatus status){
+        return orderRepository.findByStatus(status).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
 
     public OrderResponse mapToResponse(Order order){
         List<OrderItemResponse> orderItemList = order.getOrderItems().stream()
