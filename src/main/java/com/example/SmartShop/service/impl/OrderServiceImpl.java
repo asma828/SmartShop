@@ -137,6 +137,14 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    public OrderResponse canclOrder(Long id){
+        Order order = orderRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Commande introuvable avec l'ID:" + id));
+        order.setStatus(OrderStatus.CANCELED);
+        orderRepository.save(order);
+        return mapToResponse(order);
+    }
+
     public OrderResponse mapToResponse(Order order){
         List<OrderItemResponse> orderItemList = order.getOrderItems().stream()
                 .map(Item->OrderItemResponse.builder()

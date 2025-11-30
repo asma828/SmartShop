@@ -13,5 +13,6 @@ public interface OrderService {
   List<OrderResponse> getOrderByClient(Long clientId);
   List<OrderResponse> getOrderByStatus(OrderStatus status);
   OrderResponse confirmOrder(Long id);
+  OrderResponse canclOrder(Long id);
 
 }
