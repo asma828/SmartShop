@@ -70,6 +70,8 @@ public class Client {
     @Column(nullable = false,updatable = false)
     private LocalDateTime updateAt;
 
-
+    public void incrementOrder(){
+        this.TotalOrders++;
+    }
 
 }
