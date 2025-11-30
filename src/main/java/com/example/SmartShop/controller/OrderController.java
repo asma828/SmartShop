@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +44,9 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
-
+    @GetMapping("client/{clientId}")
+    public ResponseEntity<List<OrderResponse>> getOrdersByClient(Long clientId){
+        List<OrderResponse> responses = orderService.getOrderByClient(clientId);
+        return ResponseEntity.ok(responses);
+    }
 }
