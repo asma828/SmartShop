@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -113,6 +114,27 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByStatus(status).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponse confirmOrder(Long id){
+        Order order = orderRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Commande introuvable avec l'ID:" + id));
+        if(!order.canBeConfirmed()){
+            throw new BusinessRuleException("La commande ne peut pas être confirmée. Vérifiez le statut et le paiement.");
+        }
+         order.setStatus(OrderStatus.CONFIRMED);
+         order.setConfirmedAt(LocalDateTime.now());
+
+         //mettre a jour le status de client
+         Client client = order.getClient();
+         client.incrementOrder();
+         client.addToTotalSpent(order.getTotalTTC());
+         client.updateOrderDates(order.getCreatedAt());
+
+         orderRepository.save(order);
+         return mapToResponse(order);
+
     }
 
     public OrderResponse mapToResponse(Order order){
