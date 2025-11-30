@@ -7,9 +7,11 @@ import com.example.SmartShop.enums.OrderStatus;
 import java.util.List;
 
 public interface OrderService {
-OrderResponse createOrder(OrderRequest request);
-OrderResponse findOrderById(Long id);
-List<OrderResponse> findAllOrders();
-OrderResponse getOrderByClient(Long clientId);
-OrderResponse getOrderByStatus(OrderStatus status);
+  OrderResponse createOrder(OrderRequest request);
+  OrderResponse findOrderById(Long id);
+  List<OrderResponse> findAllOrders();
+  List<OrderResponse> getOrderByClient(Long clientId);
+  List<OrderResponse> getOrderByStatus(OrderStatus status);
+  OrderResponse confirmOrder(Long id);
+
 }
