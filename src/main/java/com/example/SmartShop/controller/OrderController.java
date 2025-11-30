@@ -46,14 +46,20 @@ public class OrderController {
     }
 
     @GetMapping("client/{clientId}")
-    public ResponseEntity<List<OrderResponse>> getOrdersByClient(Long clientId){
+    public ResponseEntity<List<OrderResponse>> getOrdersByClient(@PathVariable Long clientId){
         List<OrderResponse> responses = orderService.getOrderByClient(clientId);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("status/{status}")
-    public  ResponseEntity<List<OrderResponse>> getOrdersByStatus(OrderStatus status){
+    public  ResponseEntity<List<OrderResponse>> getOrdersByStatus(@PathVariable OrderStatus status){
         List<OrderResponse> responses = orderService.getOrderByStatus(status);
         return ResponseEntity.ok(responses);
+    }
+
+    @PutMapping("/{id}/confirm")
+    public ResponseEntity<OrderResponse> confirmOrder(@PathVariable Long id){
+        OrderResponse response = orderService.confirmOrder(id);
+        return ResponseEntity.ok(response);
     }
 }
