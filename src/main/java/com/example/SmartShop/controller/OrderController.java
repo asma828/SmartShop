@@ -2,6 +2,7 @@ package com.example.SmartShop.controller;
 
 import com.example.SmartShop.dto.request.OrderRequest;
 import com.example.SmartShop.dto.response.OrderResponse;
+import com.example.SmartShop.enums.OrderStatus;
 import com.example.SmartShop.service.ClientService;
 import com.example.SmartShop.service.OrderService;
 import com.example.SmartShop.service.ProductService;
@@ -47,6 +48,12 @@ public class OrderController {
     @GetMapping("client/{clientId}")
     public ResponseEntity<List<OrderResponse>> getOrdersByClient(Long clientId){
         List<OrderResponse> responses = orderService.getOrderByClient(clientId);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("status/{status}")
+    public  ResponseEntity<List<OrderResponse>> getOrdersByStatus(OrderStatus status){
+        List<OrderResponse> responses = orderService.getOrderByStatus(status);
         return ResponseEntity.ok(responses);
     }
 }
