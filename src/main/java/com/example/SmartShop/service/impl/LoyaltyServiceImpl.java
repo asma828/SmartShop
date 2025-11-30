@@ -49,7 +49,9 @@ public class LoyaltyServiceImpl implements LoyaltyService {
 
     @Value("${business.discount.platinum.threshold:1200}")
     private Integer platinumMinimumPurchase;
-    @Override public CustomerTier calculeTier(Client client){
+
+    @Override
+    public CustomerTier calculeTier(Client client){
 
         Integer totalOrder = client.getTotalOrders();
         BigDecimal totalSpend = client.getTotalSpent();
@@ -74,5 +76,15 @@ public class LoyaltyServiceImpl implements LoyaltyService {
 
         return CustomerTier.BASIC;
 
+    }
+
+    @Override
+    public void updateClientTier(Client client){
+        CustomerTier newTier = calculeTier(client);
+        CustomerTier oldTier = client.getNiveauFidelite();
+
+        if(newTier != oldTier){
+            client.setNiveauFidelite(newTier);
+        }
     }
 }
