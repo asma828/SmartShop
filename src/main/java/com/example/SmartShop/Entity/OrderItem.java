@@ -38,4 +38,8 @@ public class OrderItem {
     @Column(nullable = false,precision = 10,scale = 2)
     private BigDecimal TotalLine;
 
+    public void calculeTotal(){
+        this.TotalLine = unitPrice.multiply(BigDecimal.valueOf(this.quantity));
+    }
+
 }
