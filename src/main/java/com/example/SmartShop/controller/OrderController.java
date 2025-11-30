@@ -26,5 +26,11 @@ public class OrderController {
        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id,HttpSession session){
 
+        SessionUtil.getUser(session);
+        OrderResponse response = orderService.findOrderById(id);
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+    }
 }
