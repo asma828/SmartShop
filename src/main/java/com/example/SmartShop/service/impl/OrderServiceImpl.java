@@ -93,6 +93,12 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(()->new ResourceNotFoundException("Commande introuvable avec l'ID:"+ id));
         return mapToResponse(order);
     }
+    @Override
+    public List<OrderResponse> findAllOrders(){
+        return orderRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
 
 
     public OrderResponse mapToResponse(Order order){
