@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +34,14 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ClientRepository clientRepository;
     private final ProductRepository productRepository;
+
     @Value("${business.tva.rate:20}")
     private Integer TvaRate;
 
     @Override
-    public OrderResponse createOrder(OrderRequest request){
+    public OrderResponse createOrder(OrderRequest request) {
         Client client = clientRepository.findById(request.getClientId())
-                .orElseThrow(()->new ResourceNotFoundException("client avec ce id n'existe pas"));
+                .orElseThrow(() -> new ResourceNotFoundException("client avec ce id n'existe pas"));
 
         Order order = Order.builder()
                 .client(client)
@@ -47,18 +49,43 @@ public class OrderServiceImpl implements OrderService {
                 .status(OrderStatus.PENDING)
                 .build();
 
- List<OrderItem> orderItems = new ArrayList<>();
- BigDecimal sousTotal = BigDecimal.ZERO;
- for(OrderItemRequest orderItem : request.getItems()){
-     Product product = productRepository.findActiveById(orderItem.getProductId())
-             .orElseThrow(()->new ResourceNotFoundException("Produit introuvable"));
-     if(!product.hasEnoughStock(orderItem.getQuantity())){
-         order.setStatus(OrderStatus.REJECTED);
-         orderRepository.save(order);
-         throw new BusinessRuleException("Stock insuffisant pour le produit: " + product.getNom());
+        List<OrderItem> orderItems = new ArrayList<>();
+        BigDecimal sousTotal = BigDecimal.ZERO;
+        for (OrderItemRequest itemRequest : request.getItems()) {
+            Product product = productRepository.findActiveById(itemRequest.getProductId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Produit introuvable"));
+            if (!product.hasEnoughStock(itemRequest.getQuantity())) {
+                order.setStatus(OrderStatus.REJECTED);
+                orderRepository.save(order);
+                throw new BusinessRuleException("Stock insuffisant pour le produit: " + product.getNom());
+            }
+            OrderItem orderItem = OrderItem.builder()
+                    .order(order)
+                    .product(product)
+                    .quantity(itemRequest.getQuantity())
+                    .unitPrice(product.getPrix())
+                    .build();
+            orderItem.calculeTotal();
+            orderItems.add(orderItem);
+            sousTotal = sousTotal.add(orderItem.getTotalLine());
+            product.decrementStock(itemRequest.getQuantity());
+        }
+        order.setOrderItems(orderItems);
+        order.setSousTotal(sousTotal);
 
-     }
- }
+        order.setMontantRemiseTotal(BigDecimal.ZERO);
+        order.setMontantHT(sousTotal);
 
+        BigDecimal tva = sousTotal.multiply(BigDecimal.valueOf(TvaRate))
+                .divide(BigDecimal.valueOf(100),2, RoundingMode.HALF_UP);
+
+        BigDecimal totalTTC = sousTotal.add(tva);
+        order.setTotalTTC(totalTTC);
+        order.setMontantRester(totalTTC);
+
+        Order savedOrder = orderRepository.save(order);
+        return
     }
+
+
 }
