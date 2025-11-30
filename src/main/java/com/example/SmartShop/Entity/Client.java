@@ -73,5 +73,8 @@ public class Client {
     public void incrementOrder(){
         this.TotalOrders++;
     }
+    public void addToTotalSpent(BigDecimal amount){
+        this.totalSpent = this.totalSpent.add(amount);
+    }
 
 }
