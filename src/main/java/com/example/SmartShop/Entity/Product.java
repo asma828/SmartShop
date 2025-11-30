@@ -48,5 +48,8 @@ public class Product {
     public boolean hasEnoughStock(Integer quantity) {
         return this.stock >= quantity;
     }
+    public void decrementStock(Integer quantity){
+        this.stock -=quantity;
+    }
 
 }
