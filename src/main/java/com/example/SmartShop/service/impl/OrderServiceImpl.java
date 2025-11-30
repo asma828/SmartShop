@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -84,8 +85,38 @@ public class OrderServiceImpl implements OrderService {
         order.setMontantRester(totalTTC);
 
         Order savedOrder = orderRepository.save(order);
-        return
+        return mapToResponse(savedOrder);
     }
 
+    public OrderResponse mapToResponse(Order order){
+        List<OrderItemResponse> orderItemList = order.getOrderItems().stream()
+                .map(Item->OrderItemResponse.builder()
+                        .id(Item.getId())
+                        .productId(Item.getProduct().getId())
+                        .productNom(Item.getProduct().getNom())
+                        .quantity(Item.getQuantity())
+                        .unitPrice(Item.getUnitPrice())
+                        .totalLine(Item.getTotalLine())
+                        .build())
+                .collect(Collectors.toList());
 
+        return OrderResponse.builder()
+                .id(order.getId())
+                .clientId(order.getClient().getId())
+                .items(orderItemList)
+                .codePromo(order.getCodePromo())
+                .sousTotal(order.getSousTotal())
+                .remiseFidelite(order.getRemiseFidelite())
+                .remisePromo(order.getRemisePromo())
+                .montantRemiseTotal(order.getMontantRemiseTotal())
+                .montantHT(order.getMontantHT())
+                .tva(order.getTva())
+                .totalTTC(order.getTotalTTC())
+                .montantPaye(order.getMontantPayer())
+                .montantRestant(order.getMontantRester())
+                .status(order.getStatus())
+                .createdAt(order.getCreatedAt())
+                .confirmedAt(order.getConfirmedAt())
+                .build();
+    }
 }
