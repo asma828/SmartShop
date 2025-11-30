@@ -91,4 +91,7 @@ public class Order {
     public boolean isFullyPaid(){
         return montantRester.compareTo(BigDecimal.ZERO)==0;
     }
+    public boolean canBeConfirmed(){
+        return status == OrderStatus.PENDING && isFullyPaid();
+    }
 }
