@@ -88,6 +88,13 @@ public class OrderServiceImpl implements OrderService {
         return mapToResponse(savedOrder);
     }
 
+    public OrderResponse findOrderById(Long id){
+        Order order = orderRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Commande introuvable avec l'ID:"+ id));
+        return mapToResponse(order);
+    }
+
+
     public OrderResponse mapToResponse(Order order){
         List<OrderItemResponse> orderItemList = order.getOrderItems().stream()
                 .map(Item->OrderItemResponse.builder()
