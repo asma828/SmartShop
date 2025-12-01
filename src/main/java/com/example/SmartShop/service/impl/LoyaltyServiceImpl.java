@@ -90,7 +90,20 @@ public class LoyaltyServiceImpl implements LoyaltyService {
 
     @Override
     public BigDecimal calculateDiscountRate(CustomerTier tier,BigDecimal sousTotal){
-        if()
+        if(!isEligibleForDiscount(tier,sousTotal)){
+            return BigDecimal.ZERO;
+        }
+        switch (tier){
+            case PLATINUM:
+                return BigDecimal.valueOf(platinumDiscountRate);
+            case GOLD:
+                return BigDecimal.valueOf(goldDiscountRate);
+            case SILVER:
+                return BigDecimal.valueOf(silverDiscountRate);
+            case BASIC:
+            default:
+                return BigDecimal.ZERO;
+        }
     }
 
     @Override
