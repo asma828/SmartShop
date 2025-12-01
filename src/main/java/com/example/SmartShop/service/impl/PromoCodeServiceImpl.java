@@ -4,6 +4,8 @@ import com.example.SmartShop.service.PromoCodeService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.regex.Pattern;
 
 @Service
@@ -20,5 +22,17 @@ public class PromoCodeServiceImpl implements PromoCodeService {
         }
         boolean valid = PROMO_PATTERN.matcher(code).matches();
         return valid;
+    }
+
+    @Override
+    public BigDecimal calculatePromoDiscount(String code, BigDecimal sousTotal){
+        if (!isValideCodePromo(code)){
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal promoDiscount = sousTotal.multiply(BigDecimal.valueOf(promoDiscountRate))
+                .divide(BigDecimal.valueOf(100),2, RoundingMode.HALF_UP);
+
+        return promoDiscount;
     }
 }
