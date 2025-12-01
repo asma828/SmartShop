@@ -9,6 +9,7 @@ public interface LoyaltyService {
     CustomerTier calculeTier(Client client);
     void updateClientTier(Client client);
     BigDecimal calculateDiscountRate(CustomerTier tier,BigDecimal sousTotal);
+    BigDecimal calculateDiscountAmount(CustomerTier tier, BigDecimal sousTotal);
     boolean isEligibleForDiscount(CustomerTier tier, BigDecimal sousTotal);
 
 }

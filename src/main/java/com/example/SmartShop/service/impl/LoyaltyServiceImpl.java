@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 @Service
@@ -104,6 +105,18 @@ public class LoyaltyServiceImpl implements LoyaltyService {
             default:
                 return BigDecimal.ZERO;
         }
+    }
+
+    @Override
+    public BigDecimal calculateDiscountAmount(CustomerTier tier,BigDecimal sousTotal){
+        BigDecimal discountRate = calculateDiscountRate(tier,sousTotal);
+        if(discountRate.compareTo(BigDecimal.ZERO)==0) {
+            return BigDecimal.ZERO;
+        }
+            BigDecimal discountAmount = sousTotal.multiply((discountRate))
+                    .divide(BigDecimal.valueOf(100),2, RoundingMode.HALF_UP);
+            return discountAmount;
+
     }
 
     @Override
