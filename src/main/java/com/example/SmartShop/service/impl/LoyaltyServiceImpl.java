@@ -87,4 +87,25 @@ public class LoyaltyServiceImpl implements LoyaltyService {
             client.setNiveauFidelite(newTier);
         }
     }
+
+    @Override
+    public BigDecimal calculateDiscountRate(CustomerTier tier,BigDecimal sousTotal){
+        if()
+    }
+
+    @Override
+    public boolean isEligibleForDiscount(CustomerTier tier, BigDecimal sousTotal){
+        switch (tier){
+            case PLATINUM:
+                return sousTotal.compareTo(BigDecimal.valueOf(platinumMinimumPurchase)) >=0;
+            case GOLD:
+                return sousTotal.compareTo(BigDecimal.valueOf(goldMinimumPurchase)) >=0;
+            case SILVER:
+                return sousTotal.compareTo(BigDecimal.valueOf(silverMinimumPurchase)) >=0;
+            case BASIC:
+            default:
+                return false;
+        }
+    }
+
 }
