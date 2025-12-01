@@ -16,23 +16,33 @@ public class PromoCodeServiceImpl implements PromoCodeService {
     public final Pattern PROMO_PATTERN = Pattern.compile("^PROMO-[A-Z0-9]{4}$");
 
     @Override
-    public boolean isValideCodePromo(String code){
-        if(code == null || code.isEmpty()){
-              return false;
+    public boolean isValideCodePromo(String code) {
+        if (code == null || code.isEmpty()) {
+            return false;
         }
         boolean valid = PROMO_PATTERN.matcher(code).matches();
         return valid;
     }
 
     @Override
-    public BigDecimal calculatePromoDiscount(String code, BigDecimal sousTotal){
-        if (!isValideCodePromo(code)){
+    public BigDecimal calculatePromoDiscount(String code, BigDecimal sousTotal) {
+        if (!isValideCodePromo(code)) {
             return BigDecimal.ZERO;
         }
 
         BigDecimal promoDiscount = sousTotal.multiply(BigDecimal.valueOf(promoDiscountRate))
-                .divide(BigDecimal.valueOf(100),2, RoundingMode.HALF_UP);
+                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
         return promoDiscount;
     }
+
+    @Override
+    public Integer getPromoDiscountRate(String code){
+        if (isValideCodePromo(code)){
+            return 0;
+        }
+        return promoDiscountRate;
+    }
+
+
 }
