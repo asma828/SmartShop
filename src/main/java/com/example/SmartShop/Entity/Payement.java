@@ -9,6 +9,7 @@ import lombok.*;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -32,7 +33,7 @@ public class Payement {
     private Integer numeroPaiement;
 
     @Column(nullable = false,precision = 10,scale = 2)
-    private Integer montant;
+    private BigDecimal montant;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

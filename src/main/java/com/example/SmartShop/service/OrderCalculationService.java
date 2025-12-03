@@ -10,5 +10,4 @@ import java.util.List;
 public interface OrderCalculationService {
     BigDecimal calculateSousTotal(List<OrderItem> items);
     void calculateOrderAmounts(Order order, Client client);
-    BigDecimal calculateTVA(BigDecimal montantHT);
 }
