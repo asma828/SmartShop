@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +92,13 @@ public class PaymentServiceImpl implements PaymentService {
         Payement payement = payementRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Paiement introuvable avec l'ID: "+ id));
         return mapToResponse(payement);
+    }
+
+    @Override
+    public List<PaymentResponse> getPaymentsByOrder(Long orderId) {
+        return payementRepository.findByOrderId(orderId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
     private PaymentResponse mapToResponse(Payement payment) {
