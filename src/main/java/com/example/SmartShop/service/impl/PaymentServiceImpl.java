@@ -84,6 +84,14 @@ public class PaymentServiceImpl implements PaymentService {
         return mapToResponse(savedPayement);
 
     }
+
+    @Override
+    public PaymentResponse getPaymentById(Long id) {
+        Payement payement = payementRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Paiement introuvable avec l'ID: "+ id));
+        return mapToResponse(payement);
+    }
+
     private PaymentResponse mapToResponse(Payement payment) {
         return PaymentResponse.builder()
                 .id(payment.getId())
@@ -100,6 +108,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .createdAt(payment.getCreatedAt())
                 .build();
     }
+
 
 
     }
