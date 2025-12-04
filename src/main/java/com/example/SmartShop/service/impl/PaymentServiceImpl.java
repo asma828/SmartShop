@@ -77,9 +77,10 @@ public class PaymentServiceImpl implements PaymentService {
                 (request.getTypePaiement() == PaymentType.VIREMENT && request.getDateEcheance() == null)){
             payement.setPayementStatus(PayementStatus.ENCAISSE);
             payement.setDateEncaissement(LocalDate.now());
+
             // Mettre à jour le montant payé de la commande
-            order.setMontantPayer(order.getMontantPayer().add(BigDecimal.valueOf(payement.getMontant())));
-            order.setMontantRester(order.getMontantRester().subtract(BigDecimal.valueOf(payement.getMontant())));
+            order.setMontantPayer(order.getMontantPayer().add(payement.getMontant()));
+            order.setMontantRester(order.getMontantRester().subtract(payement.getMontant()));
         }
         Payement savedPayement = payementRepository.save(payement);
         orderRepository.save(order);
