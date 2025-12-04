@@ -43,4 +43,10 @@ public class PaymentController {
         PaymentResponse response = paymentService.encaisserPayment(id);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<PaymentResponse> rejectPayment(@PathVariable Long id){
+        PaymentResponse response = paymentService.rejectPayment(id);
+        return ResponseEntity.ok(response);
+    }
 }
