@@ -95,6 +95,13 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public List<PaymentResponse> getPaymentsByOrder(Long orderId) {
+        return payementRepository.findByOrderId(orderId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public PaymentResponse encaisserPayment(Long id) {
         Payement payement = payementRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Paiement introuvable avec l'ID:" + id));
@@ -116,10 +123,16 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<PaymentResponse> getPaymentsByOrder(Long orderId) {
-        return payementRepository.findByOrderId(orderId).stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    public PaymentResponse rejectPayment(Long id) {
+        Payement payement = payementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paiement introuvable avec l'ID:" + id));
+        if(payement.getPayementStatus() != PayementStatus.EN_ATTENTE){
+            throw new BusinessRuleException("Seuls les paiements EN_ATTENTE peuvent être rejetés");
+        }
+        payement.setPayementStatus(PayementStatus.REJECTED);
+        payementRepository.save(payement);
+
+        return mapToResponse(payement);
     }
 
     private PaymentResponse mapToResponse(Payement payment) {
