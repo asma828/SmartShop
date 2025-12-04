@@ -38,4 +38,9 @@ public class PaymentController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}/encaisser")
+    public ResponseEntity<PaymentResponse> encaisserPayment(@PathVariable Long id){
+        PaymentResponse response = paymentService.encaisserPayment(id);
+        return ResponseEntity.ok(response);
+    }
 }
