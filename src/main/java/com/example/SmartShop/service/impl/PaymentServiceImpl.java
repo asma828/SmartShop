@@ -95,6 +95,27 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public PaymentResponse encaisserPayment(Long id) {
+        Payement payement = payementRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Paiement introuvable avec l'ID:" + id));
+        if(payement.getPayementStatus() != PayementStatus.EN_ATTENTE){
+            throw new BusinessRuleException("Seuls les paiements EN_ATTENTE peuvent être encaissés");
+        }
+        payement.setPayementStatus(PayementStatus.ENCAISSE);
+        payement.setDateEncaissement(LocalDate.now());
+
+        //Mettre a jour la commande
+        Order order = payement.getOrder();
+        order.setMontantPayer(order.getMontantPayer().add(payement.getMontant()));
+        order.setMontantRester(order.getMontantRester().subtract(payement.getMontant()));
+
+        payementRepository.save(payement);
+        orderRepository.save(order);
+
+        return mapToResponse(payement);
+    }
+
+    @Override
     public List<PaymentResponse> getPaymentsByOrder(Long orderId) {
         return payementRepository.findByOrderId(orderId).stream()
                 .map(this::mapToResponse)
