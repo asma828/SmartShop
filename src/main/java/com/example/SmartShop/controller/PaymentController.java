@@ -3,11 +3,15 @@ package com.example.SmartShop.controller;
 import com.example.SmartShop.dto.request.PaymentRequest;
 import com.example.SmartShop.dto.response.PaymentResponse;
 import com.example.SmartShop.service.PaymentService;
+import com.example.SmartShop.util.SessionUtil;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/payements")
@@ -26,4 +30,12 @@ public class PaymentController {
         PaymentResponse response = paymentService.getPaymentById(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<List<PaymentResponse>> getPayementByOrder(@PathVariable Long orderId, HttpSession session){
+        SessionUtil.getUser(session);
+        List<PaymentResponse> response = paymentService.getPaymentsByOrder(orderId);
+        return ResponseEntity.ok(response);
+    }
+
 }
