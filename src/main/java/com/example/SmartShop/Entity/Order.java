@@ -94,4 +94,8 @@ public class Order {
     public boolean canBeConfirmed(){
         return status == OrderStatus.PENDING && isFullyPaid();
     }
+
+    public boolean canBeCanceled() {
+        return status == OrderStatus.PENDING;
+    }
 }

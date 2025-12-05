@@ -4,13 +4,12 @@ import com.example.SmartShop.Entity.Order;
 import com.example.SmartShop.Entity.Payement;
 import com.example.SmartShop.dto.request.PaymentRequest;
 import com.example.SmartShop.dto.response.PaymentResponse;
-import com.example.SmartShop.enums.OrderStatus;
 import com.example.SmartShop.enums.PayementStatus;
 import com.example.SmartShop.enums.PaymentType;
 import com.example.SmartShop.exception.BusinessRuleException;
 import com.example.SmartShop.exception.ResourceNotFoundException;
 import com.example.SmartShop.repository.OrderRepository;
-import com.example.SmartShop.repository.PayementRepository;
+import com.example.SmartShop.repository.PaymentRepository;
 import com.example.SmartShop.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
-    public final PayementRepository payementRepository;
+    public final PaymentRepository payementRepository;
     public final OrderRepository orderRepository;
 
     @Value("${business.payment.cash.limit:20000}")

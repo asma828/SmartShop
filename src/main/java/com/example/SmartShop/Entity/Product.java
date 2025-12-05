@@ -52,4 +52,9 @@ public class Product {
         this.stock -=quantity;
     }
 
+    public void incrementStock(Integer quantity) {
+        this.stock += quantity;
+    }
+
+
 }
