@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,11 +25,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest request, HttpSession session){
-        log.info("login attempt for username :{}",request.getUsername());
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(()-> new UnauthorizedException("invalide username or password"));
-        if(passwordEncoder.matches(request.getPassword(),user.getPassword())){
-            log.warn("Invalide password for username: {}",request.getUsername());
+
+        if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
             throw new UnauthorizedException("Invalide username or password");
         }
         SessionUtil.setUser(session,user);
@@ -45,7 +44,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(HttpSession session){
         User user = SessionUtil.getUser(session);
-        log.info("User {} logging out",user.getUsername());
         SessionUtil.clearUser(session);
     }
 

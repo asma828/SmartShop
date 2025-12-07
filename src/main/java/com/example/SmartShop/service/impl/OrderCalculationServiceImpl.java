@@ -29,7 +29,7 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
     @Override
     public BigDecimal calculateSousTotal(List<OrderItem> items){
         return items.stream().map(OrderItem::getTotalLine)
-                .reduce(BigDecimal.ONE,BigDecimal::add);
+                .reduce(BigDecimal.ZERO,BigDecimal::add);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
         order.setTotalTTC(totalTTC);
         // 8. Initialiser le montant restant (sera mis à jour par les paiements)
         if(order.getMontantPayer() == null){
-            order.setMontantRester(BigDecimal.ZERO);
+            order.setMontantPayer(BigDecimal.ZERO);
         }
         order.setMontantRester(totalTTC.subtract(order.getMontantPayer()));
 

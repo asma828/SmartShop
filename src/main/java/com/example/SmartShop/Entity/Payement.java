@@ -42,10 +42,10 @@ public class Payement {
     @Column(nullable = false)
     private LocalDate datePaiement;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate dateEncaissement;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate dateEcheance;
 
     @Enumerated(EnumType.STRING)

@@ -56,7 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             // 6. Calculer le numéro séquentiel
-            Integer numeroPaiement = payementRepository.countPaymentsByOrder(request.getOrderId()+1);
+            Integer numeroPaiement = payementRepository.countPaymentsByOrder(request.getOrderId())+1;
 
             // 7. Créer le paiement
         Payement payement = Payement.builder()

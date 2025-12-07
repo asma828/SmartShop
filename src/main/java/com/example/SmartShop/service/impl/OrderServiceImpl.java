@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -60,11 +60,14 @@ public class OrderServiceImpl implements OrderService {
 
                 // Sauvegarder la commande avec statut REJECTED
                 order.setStatus(OrderStatus.REJECTED);
-                order.setSousTotal(java.math.BigDecimal.ZERO);
-                order.setMontantHT(java.math.BigDecimal.ZERO);
-                order.setTva(java.math.BigDecimal.ZERO);
-                order.setTotalTTC(java.math.BigDecimal.ZERO);
-                order.setMontantRester(java.math.BigDecimal.ZERO);
+                order.setSousTotal(BigDecimal.ZERO);
+                order.setMontantHT(BigDecimal.ZERO);
+                order.setTva(BigDecimal.ZERO);
+                order.setTotalTTC(BigDecimal.ZERO);
+                order.setMontantRester(BigDecimal.ZERO);
+                order.setRemiseFidelite(BigDecimal.ZERO);
+                order.setRemisePromo(BigDecimal.ZERO);
+                order.setMontantRemiseTotal(BigDecimal.ZERO);
                 orderRepository.save(order);
 
                 throw new BusinessRuleException("Stock insuffisant pour le produit Demandé.");
