@@ -23,34 +23,6 @@ public class LoyaltyController {
     private final ClientRepository clientRepository;
 
     /**
-     * Recalculer le niveau de fidélité d'un client
-     * PUT /api/loyalty/recalculate/{clientId}
-     */
-    @PutMapping("/recalculate/{clientId}")
-    public ResponseEntity<Map<String, Object>> recalculateTier(
-            @PathVariable Long clientId) {
-
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
-
-        CustomerTier oldTier = client.getNiveauFidelite();
-        loyaltyService.updateClientTier(client);
-        clientRepository.save(client);
-        CustomerTier newTier = client.getNiveauFidelite();
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("clientId", clientId);
-        response.put("clientName", client.getNom());
-        response.put("oldTier", oldTier);
-        response.put("newTier", newTier);
-        response.put("totalOrders", client.getTotalOrders());
-        response.put("totalSpent", client.getTotalSpent());
-        response.put("changed", oldTier != newTier);
-
-        return ResponseEntity.ok(response);
-    }
-
-    /**
      * Calculer la remise applicable pour un montant donné
      * GET /api/loyalty/discount/{clientId}?amount=1000
      */

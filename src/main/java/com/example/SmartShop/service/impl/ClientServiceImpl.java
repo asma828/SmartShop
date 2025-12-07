@@ -3,14 +3,18 @@ package com.example.SmartShop.service.impl;
 import com.example.SmartShop.Entity.Client;
 import com.example.SmartShop.Entity.User;
 import com.example.SmartShop.dto.request.ClientRequest;
+import com.example.SmartShop.dto.response.ClientProfileResponse;
 import com.example.SmartShop.dto.response.ClientResponse;
 import com.example.SmartShop.enums.UserRole;
 import com.example.SmartShop.exception.BusinessRuleException;
 import com.example.SmartShop.exception.ResourceNotFoundException;
+import com.example.SmartShop.exception.UnauthorizedException;
 import com.example.SmartShop.mapper.ClientMapper;
 import com.example.SmartShop.repository.ClientRepository;
 import com.example.SmartShop.repository.UserRepository;
 import com.example.SmartShop.service.ClientService;
+import com.example.SmartShop.util.SessionUtil;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -104,6 +108,48 @@ public class ClientServiceImpl implements ClientService {
             throw new ResourceNotFoundException("client introvable avec l'id "  + id);
         }
          clientRepository.deleteById(id);
+    }
+
+    @Override
+    public ClientProfileResponse getClientProfile(HttpSession session) {
+        // 1. Récupérer l'utilisateur connecté
+        User user = SessionUtil.getUser(session);
+
+        // 2. Vérifier que c'est bien un CLIENT
+        if (user.getRole() != UserRole.CLIENT) {
+            throw new UnauthorizedException("Seuls les clients peuvent accéder à ce profil");
+        }
+
+        // 3. Récupérer le client associé à l'utilisateur
+        Client client = clientRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException("Profil client introuvable"));
+
+        // 4. Construire l'historique des commandes
+        List<ClientProfileResponse.OrderSummary> historiqueCommandes = client.getOrders()
+                .stream()
+                .map(order -> ClientProfileResponse.OrderSummary.builder()
+                        .id(order.getId())
+                        .date(order.getCreatedAt())
+                        .montantTotal(order.getTotalTTC())
+                        .statut(order.getStatus().name())
+                        .nombreArticles(order.getOrderItems().size())
+                        .build())
+                .collect(Collectors.toList());
+
+
+
+        // 7. Construire la réponse complète
+        return ClientProfileResponse.builder()
+                .id(client.getId())
+                .nom(client.getNom())
+                .email(client.getEmail())
+                .niveauFidelite(client.getNiveauFidelite())
+                .nombreCommandes(client.getTotalOrders())
+                .montantTotalDepense(client.getTotalSpent())
+                .premiereCommande(client.getFirstOrderDate())
+                .derniereCommande(client.getLastOrderDate())
+                .historiqueCommandes(historiqueCommandes)
+                .build();
     }
 
 }

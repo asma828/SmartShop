@@ -2,6 +2,7 @@ package com.example.SmartShop.controller;
 
 import com.example.SmartShop.Entity.Client;
 import com.example.SmartShop.dto.request.ClientRequest;
+import com.example.SmartShop.dto.response.ClientProfileResponse;
 import com.example.SmartShop.dto.response.ClientResponse;
 import com.example.SmartShop.service.ClientService;
 import com.example.SmartShop.util.SessionUtil;
@@ -21,7 +22,8 @@ public class ClientController {
     private final ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest request){
+    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest request,HttpSession session){
+        SessionUtil.requireAdmin(session);
         ClientResponse clientResponse = clientService.createClient(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientResponse);
     }
@@ -50,4 +52,11 @@ public class ClientController {
          clientService.deleteClient(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/me/profile")
+    public ResponseEntity<ClientProfileResponse> getMyProfile(HttpSession session) {
+        ClientProfileResponse profile = clientService.getClientProfile(session);
+        return ResponseEntity.ok(profile);
+    }
+
 }

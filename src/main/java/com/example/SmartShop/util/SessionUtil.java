@@ -47,4 +47,10 @@ public class SessionUtil {
         return user.getRole() == UserRole.CLIENT;
     }
 
+    public static void requireAdmin(HttpSession session) {
+        if (!isAdmin(session)) {
+            throw new UnauthorizedException("Access denied. Admin role required.");
+        }
+    }
+
 }

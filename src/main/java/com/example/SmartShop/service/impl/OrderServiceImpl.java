@@ -70,7 +70,8 @@ public class OrderServiceImpl implements OrderService {
                 order.setMontantRemiseTotal(BigDecimal.ZERO);
                 orderRepository.save(order);
 
-                throw new BusinessRuleException("Stock insuffisant pour le produit Demandé.");
+                throw new BusinessRuleException("Stock insuffisant pour le produit: " + product.getNom() +
+                        " (Demandé: " + itemRequest.getQuantity() + ", Disponible: " + product.getStock() + ")");
             }
 
             // Créer l'item avec le prix actuel du produit
@@ -89,11 +90,6 @@ public class OrderServiceImpl implements OrderService {
 
         // 4. Calculer tous les montants (sous-total, remises, TVA, total)
         calculationService.calculateOrderAmounts(order, client);
-
-        // 5. Décrémenter le stock uniquement si la commande est validée
-        for (OrderItem item : orderItems) {
-            item.getProduct().decrementStock(item.getQuantity());
-        }
 
         // 6. Sauvegarder la commande
         Order savedOrder = orderRepository.save(order);
@@ -147,6 +143,20 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
+        // Vérifier à nouveau le stock avant confirmation (au cas où il aurait changé)
+        for (OrderItem item : order.getOrderItems()) {
+            Product product = item.getProduct();
+            if (!product.hasEnoughStock(item.getQuantity())) {
+                throw new BusinessRuleException("Stock insuffisant pour confirmer la commande. Produit: " +
+                        product.getNom() + " (Demandé: " + item.getQuantity() + ", Disponible: " + product.getStock() + ")");
+            }
+        }
+
+        // DÉCRÉMENTER LE STOCK (lors de la confirmation)
+        for (OrderItem item : order.getOrderItems()) {
+            item.getProduct().decrementStock(item.getQuantity());
+        }
+
         // Confirmer la commande
         order.setStatus(OrderStatus.CONFIRMED);
         order.setConfirmedAt(LocalDateTime.now());
@@ -178,11 +188,6 @@ public class OrderServiceImpl implements OrderService {
 
         // Annuler la commande
         order.setStatus(OrderStatus.CANCELED);
-
-        // Restaurer le stock des produits
-        for (OrderItem item : order.getOrderItems()) {
-            item.getProduct().incrementStock(item.getQuantity());
-        }
 
         orderRepository.save(order);
 

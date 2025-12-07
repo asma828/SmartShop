@@ -51,7 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             // 5. Vérifier les champs obligatoires selon le type
-            if(request.getTypePaiement() == PaymentType.CHEQUE && request.getReference() == null){
+            if(request.getTypePaiement() == PaymentType.CHEQUE && request.getDateEcheance() == null){
                 throw new BusinessRuleException("La date d'échéance est obligatoire pour un chèque");
             }
 
