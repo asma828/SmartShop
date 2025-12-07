@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -182,8 +182,6 @@ public class OrderServiceImpl implements OrderService {
         // Restaurer le stock des produits
         for (OrderItem item : order.getOrderItems()) {
             item.getProduct().incrementStock(item.getQuantity());
-            log.debug("Stock restored for product {}: {} units added",
-                    item.getProduct().getNom(), item.getQuantity());
         }
 
         orderRepository.save(order);
