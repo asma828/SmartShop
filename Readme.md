@@ -2,7 +2,7 @@
 
 Application de gestion commerciale développée pour MicroTech Maroc avec Spring Boot.
 
-## 📋 Fonctionnalités
+##  Fonctionnalités
 
 - **Gestion des Clients** : Création, modification, suppression de clients
 - **Gestion des Produits** : CRUD complet avec gestion de stock
@@ -12,7 +12,7 @@ Application de gestion commerciale développée pour MicroTech Maroc avec Spring
 - **Codes Promo** : Application automatique de remises promotionnelles
 - **Authentification** : Système de login avec sessions (ADMIN/CLIENT)
 
-## 🛠️ Technologies
+##  Technologies
 
 - **Java 11**
 - **Spring Boot 3.2.2**
@@ -22,7 +22,7 @@ Application de gestion commerciale développée pour MicroTech Maroc avec Spring
 - **MapStruct**
 - **Maven**
 
-## 🚀 Installation
+##  Installation
 
 ### Prérequis
 - Java 11+
@@ -103,7 +103,7 @@ PUT    /api/payements/{id}/encaisser  # Encaisser un paiement
 PUT    /api/payements/{id}/reject     # Rejeter un paiement
 ```
 
-## 📦 Structure du Projet
+##  Structure du Projet
 ```
 src/main/java/com/example/SmartShop/
 ├── Entity/              # Entités JPA
