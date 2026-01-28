@@ -63,7 +63,7 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
         // 7. Calculer le total TTC
         BigDecimal totalTTC = montantHT.add(montantTVA);
         order.setTotalTTC(totalTTC);
-        // 8. Initialiser le montant restant (sera mis à jour par les paiements)
+        // 8. Initialiser le montant restant
         if(order.getMontantPayer() == null){
             order.setMontantPayer(BigDecimal.ZERO);
         }

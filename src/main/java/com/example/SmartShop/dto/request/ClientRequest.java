@@ -18,7 +18,6 @@ public class ClientRequest {
     @Email(message = "Format d'email invalide")
     private String email;
 
-    // Nouveau: username et password pour créer le compte User
     @NotBlank(message = "le username est obligatoire")
     @Size(min = 3, message = "Le username doit contenir au moins 3 caractères")
     private String username;
